@@ -1,7 +1,6 @@
 # Community hardening: v0.1.0-community.1
 
-Base: f5ad8d0af21db17f6ab50255f37926ee871ade4a (upstream v0.1.0).
-Upstream documentation was synchronized with commit 1a56b55. This is a community-modified build, not an official OpenAI or upstream release. The DLL is unsigned.
+This is a community-modified build, not an official OpenAI release. The DLL is unsigned.
 
 ## Changes
 

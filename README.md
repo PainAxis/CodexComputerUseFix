@@ -4,7 +4,7 @@
 
 ## 社区修复预发布版
 
-这是 [MagicalAstrogy/CodexComputerUseFix](https://github.com/MagicalAstrogy/CodexComputerUseFix) 的社区分支，保留原作者代码与 WTFPL v2 许可证。它不是 OpenAI 官方补丁，也不是上游正式发布版。
+这是面向 Windows 10 的社区修复预发布版，不是 OpenAI 官方补丁。
 
 本分支修复了安装记录写入失败后的残留 DLL、内存页保护恢复失败处理，以及帧事件注册与关闭并发时的资源泄漏。新增回归测试；具体改动和验证范围见 [修复说明](LOCAL_FIXES.md)。
 
@@ -153,6 +153,29 @@ capture-compat/
 - [验证与排错指南](capture-compat/docs/validation.md)
 - [CI 与 Release 指南](capture-compat/docs/ci.md)
 
-## 许可证
+## 鸣谢
 
-本项目采用 [WTFPL v2](https://www.wtfpl.net/about/) 许可证，完整文本见 [LICENSE](LICENSE)。
+本项目基于 [MagicalAstrogy/CodexComputerUseFix](https://github.com/MagicalAstrogy/CodexComputerUseFix)，感谢原作者 MagicalAstrogy 提供 Windows 10 截图兼容实现。本次修复基于上游 v0.1.0（f5ad8d0），文档同步至 1a56b55，并补充安装恢复、内存保护恢复和并发订阅清理修复及测试。
+
+原项目采用 WTFPL v2；本项目沿用该许可。许可全文集中收录如下：
+
+<details>
+<summary>WTFPL v2 许可全文</summary>
+
+```text
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                    Version 2, December 2004
+
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+```
+
+</details>

@@ -4,7 +4,7 @@
 
 ## Community hardening prerelease
 
-This is a community fork of [MagicalAstrogy/CodexComputerUseFix](https://github.com/MagicalAstrogy/CodexComputerUseFix), retaining the original authorship and WTFPL v2 license. It is not an official OpenAI patch or an upstream release.
+This is a community hardening prerelease for Windows 10. It is not an official OpenAI patch.
 
 This fork fixes an orphan DLL after installation-record write failures, handles failed memory-protection restoration, and fixes resource leaks when frame registration races with close. Added regression coverage and validation limits are documented in [LOCAL_FIXES.md](LOCAL_FIXES.md).
 
@@ -165,6 +165,29 @@ Detailed guides are available in English and Simplified Chinese:
 - [Validation and troubleshooting](capture-compat/docs/validation_en.md)
 - [CI and releases](capture-compat/docs/ci_en.md)
 
-## License
+## Acknowledgements
 
-This project is licensed under [WTFPL v2](https://www.wtfpl.net/about/). See [LICENSE](LICENSE) for the full text.
+Based on [MagicalAstrogy/CodexComputerUseFix](https://github.com/MagicalAstrogy/CodexComputerUseFix). Thanks to MagicalAstrogy for the original Windows 10 capture compatibility implementation. These fixes build on upstream v0.1.0 (f5ad8d0), with documentation synchronized to 1a56b55, and add installer recovery, page-protection restoration, concurrent subscription cleanup, and regression tests.
+
+The original project uses WTFPL v2; this project uses the same license. The complete license text is included here:
+
+<details>
+<summary>Full WTFPL v2 license</summary>
+
+```text
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                    Version 2, December 2004
+
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+```
+
+</details>

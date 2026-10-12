@@ -33,7 +33,7 @@ The workflow defaults to read access to repository contents. Only the tagged rel
 
 ## Downloading and installing
 
-Download published versions from [Releases](https://github.com/MagicalAstrogy/CodexComputerUseFix/releases). Use the regular ZIP for everyday operation and the ZIP with a `-trace` suffix for diagnostics.
+Download published versions from [Releases](https://github.com/PainAxis/CodexComputerUseFix/releases). Use the regular ZIP for everyday operation and the ZIP with a `-trace` suffix for diagnostics.
 
 Each version provides four files. For example, `v1.0.0` produces:
 
@@ -56,7 +56,7 @@ if ($actual -ine $expected) { throw 'SHA-256 mismatch.' }
 Expand-Archive -LiteralPath $archive -DestinationPath .\CodexCaptureCompat-v1.0.0
 ```
 
-The extracted package preserves the source layout. Its root contains the Chinese and English READMEs and LICENSE; `capture-compat/dist/` contains the three binaries, alongside the installation scripts, source, tests, and documentation. Enter `capture-compat` and follow the [installation guide](../README_en.md) to deploy the DLL. Extract regular and Trace packages into separate directories to avoid mixing their files.
+The extracted package preserves the source layout. Its root contains the Chinese and English READMEs (including the license in Acknowledgements); `capture-compat/dist/` contains the three binaries, alongside the installation scripts, source, tests, and documentation. Enter `capture-compat` and follow the [installation guide](../README_en.md) to deploy the DLL. Extract regular and Trace packages into separate directories to avoid mixing their files.
 
 ## Publishing a version
 

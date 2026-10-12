@@ -33,7 +33,7 @@ CI 不执行 `validate.ps1`。该脚本依赖 Windows 10 的原生接口基线�
 
 ## 下载与安装
 
-正式版本从 [Releases](https://github.com/MagicalAstrogy/CodexComputerUseFix/releases) 下载。日常使用普通 ZIP，排查问题时使用带 `-trace` 后缀的 ZIP。
+正式版本从 [Releases](https://github.com/PainAxis/CodexComputerUseFix/releases) 下载。日常使用普通 ZIP，排查问题时使用带 `-trace` 后缀的 ZIP。
 
 每个版本提供四个文件，以 `v1.0.0` 为例：
 
@@ -56,7 +56,7 @@ if ($actual -ine $expected) { throw 'SHA-256 mismatch.' }
 Expand-Archive -LiteralPath $archive -DestinationPath .\CodexCaptureCompat-v1.0.0
 ```
 
-解压目录保留源码布局：根目录为中英文 README 和 LICENSE，`capture-compat/dist/` 为三个二进制文件，同级保留安装脚本、源码、测试和文档。进入 `capture-compat`，按 [安装指南](../README.md)部署 DLL。普通包与 Trace 包分别解压，避免混用文件。
+解压目录保留源码布局：根目录为中英文 README（鸣谢中包含许可全文），`capture-compat/dist/` 为三个二进制文件，同级保留安装脚本、源码、测试和文档。进入 `capture-compat`，按 [安装指南](../README.md)部署 DLL。普通包与 Trace 包分别解压，避免混用文件。
 
 ## 发布一个版本
 
