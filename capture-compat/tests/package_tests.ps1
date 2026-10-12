@@ -29,7 +29,7 @@ foreach ($name in @('version.dll', 'compat_probe.exe', 'capture_test_window.exe'
         throw "Packaged binary differs from build output: $name"
     }
 }
-foreach ($relative in @('README.md', 'README_en.md', 'capture-compat/install.ps1', 'capture-compat/build.ps1', 'capture-compat/validate.ps1')) {
+foreach ($relative in @('README.md', 'README_zh-CN.md', 'capture-compat/install.ps1', 'capture-compat/build.ps1', 'capture-compat/validate.ps1')) {
     if (-not (Test-Path -LiteralPath (Join-Path $fixture $relative) -PathType Leaf)) { throw "Missing package file: $relative" }
 }
 

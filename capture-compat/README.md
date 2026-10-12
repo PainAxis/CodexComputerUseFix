@@ -2,7 +2,7 @@
 
 [简体中文](README.md) | [English](README_en.md)
 
-此目录包含 Windows 10 Computer Use 截图兼容层的源码、构建脚本和测试工具。项目功能介绍见[项目 README](../README.md)，内部机制见[实现说明](docs/implementation.md)。
+此目录包含 Windows 10 Computer Use 截图兼容层的源码、构建脚本和测试工具。项目功能介绍见[项目 README](../README_zh-CN.md)，内部机制见[实现说明](docs/implementation.md)。
 
 下文的命令均在本目录执行，helper 路径使用占位示例。
 

@@ -2,7 +2,7 @@
 
 [简体中文](README.md) | [English](README_en.md)
 
-This directory contains the source, build scripts, and test tools for the Windows 10 Computer Use screenshot compatibility layer. See the [project README](../README_en.md) for an overview and the [implementation guide](docs/implementation_en.md) for internal details.
+This directory contains the source, build scripts, and test tools for the Windows 10 Computer Use screenshot compatibility layer. See the [project README](../README.md) for an overview and the [implementation guide](docs/implementation_en.md) for internal details.
 
 Run all commands below from this directory. Helper paths in examples are placeholders.
 

@@ -1,40 +1,40 @@
 # Codex Capture Compat
 
-[简体中文](README.md) | [English](README_en.md)
+[English](README.md) | [简体中文](README_zh-CN.md)
 
-## 社区修复预发布版
+## Community hardening prerelease
 
-这是面向 Windows 10 的社区修复预发布版，不是 OpenAI 官方补丁。
+This is a community hardening prerelease for Windows 10. It is not an official OpenAI patch.
 
-本分支修复了安装记录写入失败后的残留 DLL、内存页保护恢复失败处理，以及帧事件注册与关闭并发时的资源泄漏。新增回归测试；具体改动和验证范围见 [修复说明](LOCAL_FIXES.md)。
+This fork fixes an orphan DLL after installation-record write failures, handles failed memory-protection restoration, and fixes resource leaks when frame registration races with close. Added regression coverage and validation limits are documented in [LOCAL_FIXES.md](LOCAL_FIXES.md).
 
-**验证结果：** Windows 10 19044.4529 上编译成功，四组原生测试、安装失败注入测试及八项捕获验证通过。实际 Codex helper 和 RDP 窗口尚未验证；DLL 未签名，请先在可回退的环境中测试。
+**Validation:** Compiled on Windows 10 19044.4529; four native test suites, installer failure injection, and all eight capture checks pass. The actual Codex helper and an RDP window have not been validated. The DLL is unsigned; test in an environment where you can roll back.
 
-下载本分支的预发布包与 SHA-256 校验文件：[社区 Releases](https://github.com/PainAxis/CodexComputerUseFix/releases)。完整解压后按下方步骤安装和卸载。
+Download this fork's prerelease packages and SHA-256 checksums from [community Releases](https://github.com/PainAxis/CodexComputerUseFix/releases). Extract the complete archive and follow the installation/removal steps below.
 
 
-面向 Windows 10 的 Codex Computer Use 截图兼容层。项目构建一个本地加载的 x64 `version.dll`，为现有 Computer Use helper 补充缺失的捕获边框接口，并调整截图回调的执行线程。
+A screenshot compatibility layer for Codex Computer Use on Windows 10. The project builds a local x64 `version.dll` that supplies a missing capture border interface and changes where screenshot callbacks run in the existing Computer Use helper.
 
-安装后继续通过原有 Computer Use 功能操作应用，无需单独运行代理程序或新增 MCP 服务。这是独立的兼容实现，不包含官方 helper 的源码。
+After installation, use Computer Use as usual. No separate proxy process or additional MCP service is required. This is an independent compatibility implementation and does not include the official helper's source code.
 
-## 功能
+## Features
 
-- **捕获边框兼容**：系统缺少 `IGraphicsCaptureSession3` 时，兼容处理 `IsBorderRequired` 属性调用，保留 Windows 默认捕获边框。
-- **截图回调派发**：将符合条件的 `FrameArrived` 回调交给 Windows 线程池的 MTA 工作线程，避免在 Windows Graphics Capture（WGC）内部回调中等待图像转换造成阻塞。
-- **本地部署与回退**：仅在 helper 同目录安装 DLL 和安装记录，通过路径、文件哈希校验管理卸载。
-- **开发验证**：提供 COM 单元测试、真实 WGC 探针、独立测试窗口和可选调用日志。
+- **Capture border compatibility:** Handles `IsBorderRequired` property calls when the system lacks `IGraphicsCaptureSession3`, preserving the default Windows capture border.
+- **Screenshot callback dispatch:** Sends eligible `FrameArrived` callbacks to MTA workers in the Windows thread pool, avoiding blocking waits for image conversion inside Windows Graphics Capture (WGC) callbacks.
+- **Local installation and removal:** Installs the DLL and an installation record beside the helper. Removal verifies the recorded path and DLL hash.
+- **Development tools:** Includes COM unit tests, a probe for real WGC capture, a standalone test window, and optional call tracing.
 
-本项目面向 Windows 10 x64。当前实现对 `codex-computer-use.exe` 和测试程序 `compat_probe.exe` 启用兼容钩子，影响范围限于加载该 DLL 的进程；不修改系统 DLL，不注册全局钩子。
+The project targets Windows 10 x64. Compatibility hooks are enabled for `codex-computer-use.exe` and the test program `compat_probe.exe`. Changes are confined to processes that load the DLL; system DLLs are not modified and no global hooks are registered.
 
-## 下载预编译版本
+## Download a prebuilt release
 
-从 [GitHub Releases](https://github.com/PainAxis/CodexComputerUseFix/releases) 下载 `CodexCaptureCompat-<版本>-windows-x64.zip`。解压完整目录后，直接按下方使用方法安装，无需配置编译工具链。文件名带 `-trace` 的包用于诊断，日常使用选择普通版。
+Download `CodexCaptureCompat-<version>-windows-x64.zip` from [GitHub Releases](https://github.com/PainAxis/CodexComputerUseFix/releases). Extract the complete archive, then follow the usage instructions below. No compiler toolchain is needed. Archives with a `-trace` suffix are diagnostic builds; use the regular build for everyday operation.
 
-每个 ZIP 都附有 `.sha256` 校验文件，并包含安装脚本、探针、文档和源码。校验与发布步骤见 [CI 与 Release 指南](capture-compat/docs/ci.md)。
+Each ZIP has a `.sha256` checksum file and includes the installer, probes, documentation, and source. See the [CI and release guide](capture-compat/docs/ci_en.md) for verification and publishing instructions.
 
-## 从源码构建
+## Build from source
 
-在项目根目录打开 PowerShell：
+Open PowerShell in the project root:
 
 ```powershell
 Set-Location .\capture-compat
@@ -43,124 +43,136 @@ Set-Location .\capture-compat
 .\validate.ps1
 ```
 
-构建需要 MSVC x64 C++ 工具、MASM 和 Windows SDK；实机验证需要已登录、未锁定的 Windows 10 交互桌面。工具链要求及构建选项见[构建与使用指南](capture-compat/README.md)。
+Building requires the MSVC x64 C++ tools, MASM, and the Windows SDK. Live capture tests require a logged-in, unlocked Windows 10 interactive desktop. See the [build and usage guide](capture-compat/README_en.md) for toolchain requirements and build options.
 
-构建产物位于 `capture-compat/dist/`：
+Build outputs are written to `capture-compat/dist/`:
 
-| 产物 | 用途 |
+| Artifact | Purpose |
 | --- | --- |
-| `version.dll` | 安装到 Computer Use helper 同目录的兼容层 |
-| `compat_probe.exe` | 验证边框接口、真实捕获和异步回调 |
-| `capture_test_window.exe` | 供 Computer Use 截图测试使用的独立窗口 |
+| `version.dll` | Compatibility layer to install beside the Computer Use helper |
+| `compat_probe.exe` | Tests the border interface, real capture, and asynchronous callbacks |
+| `capture_test_window.exe` | Standalone window for testing screenshots through Computer Use |
 
-构建和探针验证不会自动安装或更新运行时中的 DLL。
+Building and running the probe do not automatically install or update the DLL in the runtime directory.
 
-## 使用方法
+## Usage
 
-### 安装
+### Installation
 
-先确认实际使用的 `codex-computer-use.exe` 路径。下面的路径是占位示例，使用前必须替换。
+Locate the `codex-computer-use.exe` used by your Computer Use runtime. Replace the placeholder path below with its actual path.
 
-在 `capture-compat` 目录中执行：
+Run these commands from the `capture-compat` directory:
 
 ```powershell
 $helperPath = 'C:\path\to\codex-computer-use.exe'
 
-# 预览安装位置
+# Preview the installation target
 .\install.ps1 -HelperPath $helperPath -WhatIf
 
-# 退出正在使用此 helper 的进程后安装
+# Exit the running helper before installing
 .\install.ps1 -HelperPath $helperPath -Action Install
 ```
 
-重新启动 Computer Use，让 helper 加载新 DLL。安装位置应是 helper 同目录，而不是桌面应用主程序或 Windows 系统目录。
+Restart Computer Use so that the helper loads the new DLL. Install beside the helper, rather than beside the main desktop application or in a Windows system directory.
 
-安装脚本新增 `version.dll` 和 `codex-capture-compat.install.json`。它不会修改 helper 可执行文件，也不会替用户终止进程。
+The installer adds `version.dll` and `codex-capture-compat.install.json`. It does not modify the helper executable or stop running processes.
 
-### 验证使用效果
+### Verify operation
 
-打开 `dist/capture_test_window.exe`，通过 Computer Use 选择这个测试窗口并截图。确认画面正确，再验证连续截图与窗口尺寸变化。测试窗口可直接关闭，也会在十分钟后自动退出。
+Open `dist/capture_test_window.exe`, select that window through Computer Use, and take a screenshot. Check the image, then test repeated screenshots and window resizing. You can close the test window manually; it also exits automatically after ten minutes.
 
-底层探针通过表示兼容层的受测路径正常；实际使用效果还需要在官方 helper 中验证。详细步骤见[验证与排错指南](capture-compat/docs/validation.md)。
+A passing probe confirms the tested compatibility paths. Operation through the official helper must also be verified. See the [validation and troubleshooting guide](capture-compat/docs/validation_en.md) for the full procedure.
 
-### 升级与卸载
+### Upgrade and uninstall
 
-升级前先构建新版本，并退出使用目标 DLL 的 helper，然后依次执行：
+To upgrade, build the new version and exit any helper using the installed DLL. Then run:
 
 ```powershell
 .\install.ps1 -HelperPath $helperPath -Action Uninstall
 .\install.ps1 -HelperPath $helperPath -Action Install
 ```
 
-只需回退时执行卸载命令，再重新启动 Computer Use。脚本拒绝覆盖已有的不同 DLL；卸载也只会删除与安装记录中的路径、DLL 哈希相符的文件。
+To remove the compatibility layer, run only the uninstall command and restart Computer Use. The script refuses to overwrite a different existing DLL. Removal checks the helper path and installed DLL hash against the installation record.
 
-Codex 更新后，helper 所在目录可能变化，应重新确认实际路径。完整安装规则见[构建与使用指南](capture-compat/README.md)。
+The helper directory may change after a Codex update. Check the actual path again before installing. See the [build and usage guide](capture-compat/README_en.md) for the complete installation rules.
 
-## 实现概览
+## Implementation overview
 
 ```text
 Computer Use helper
-  └─ 本地 version.dll
-      ├─ 系统 version 导出 → System32 原版 DLL
-      └─ RoGetActivationFactory 导入钩子
-          └─ WGC 帧池与捕获会话
-              ├─ 缺失的边框属性接口 → 兼容接口
-              └─ 符合条件的帧事件 → 独立 MTA 工作线程
+  └─ Local version.dll
+      ├─ System version exports → Original DLL in System32
+      └─ RoGetActivationFactory import hook
+          └─ WGC frame pools and capture sessions
+              ├─ Missing border property interface → Compatibility interface
+              └─ Eligible frame events → MTA thread pool workers
 ```
 
-`SetIsBorderRequired` 对应 WinRT/COM 属性调用，并不是 `version.dll` 的导出函数。因此，`version.dll` 在这里承担加载入口和系统导出转发的职责；实际兼容逻辑位于 WGC 对象的接口查询及事件订阅处。
+`SetIsBorderRequired` is a WinRT/COM property operation, not a `version.dll` export. The DLL serves as the loading entry point and forwards system version exports. The capture compatibility logic hooks interface queries and event subscriptions on WGC objects.
 
-边框兼容只处理原生接口查询返回 `E_NOINTERFACE` 的情况。异步派发还要求帧池不依赖 `DispatcherQueue`、回调支持跨线程调用。事件取消、对象引用和错误处理的细节见[实现说明](capture-compat/docs/implementation.md)。
+The border fallback applies only when the native interface query returns `E_NOINTERFACE`. Asynchronous dispatch also requires a frame pool without a `DispatcherQueue` and a callback that supports invocation across threads. See the [implementation guide](capture-compat/docs/implementation_en.md) for event cancellation, object lifetime, and error handling details.
 
-## 目录结构
+## Project structure
 
 ```text
 capture-compat/
-├─ README.md              构建与使用指南
-├─ README_en.md           英文构建与使用指南
-├─ build.ps1              编译 DLL、探针并运行单元测试
-├─ install.ps1            安装、卸载及文件校验
-├─ package.ps1            生成发布 ZIP 和 SHA-256 校验文件
-├─ validate.ps1           Windows 10 实机回归
-├─ src/                   DLL 代理、COM 钩子和回调派发
-├─ tests/                 单元测试、捕获探针及测试窗口
-├─ docs/                  实现说明、验证与排错
-├─ build/                 编译中间产物（生成）
-├─ dist/                  可部署产物（生成）
-└─ validation/            验证报告和测试图像（生成）
+├─ README.md              Build and usage guide (Chinese)
+├─ README_en.md           Build and usage guide (English)
+├─ build.ps1              Builds the DLL and tools; runs unit tests
+├─ install.ps1            Installation, removal, and file verification
+├─ package.ps1            Release ZIP and SHA-256 checksum generation
+├─ validate.ps1           Live Windows 10 regression tests
+├─ src/                   DLL proxy, COM hooks, and callback dispatch
+├─ tests/                 Unit tests, capture probe, and test window
+├─ docs/                  Implementation, validation, and troubleshooting
+├─ build/                 Intermediate build files (generated)
+├─ dist/                  Deployable artifacts (generated)
+└─ validation/            Test reports and captured images (generated)
 ```
 
-`build/`、`dist/` 和 `validation/` 已被工程的 `.gitignore` 排除，源码副本中可能尚不存在这些目录。打包输出位于仓库根目录的 `artifacts/`，同样不进入版本控制。
+The project's `.gitignore` excludes `build/`, `dist/`, and `validation/`. These directories may not exist in a fresh source checkout. Packages are written to `artifacts/` at the repository root, which is also excluded from version control.
 
-## CI 与 Release
+## CI and releases
 
-[Build and release](https://github.com/PainAxis/CodexComputerUseFix/actions/workflows/build.yml) 工作流在推送 `main`、向 `main` 提交 PR 或手动运行时，构建并测试普通版和 Trace 版，提供保留 14 天的 Actions 下载产物。
+The [Build and release](https://github.com/PainAxis/CodexComputerUseFix/actions/workflows/build.yml) workflow builds and tests regular and Trace configurations on pushes to `main`, pull requests targeting `main`, and manual runs. Downloadable Actions artifacts are retained for 14 days.
 
-推送 `v1.0.0` 这样的版本标签时，两个构建都通过后自动创建 GitHub Release，上传两个 ZIP 及其校验文件。带 `-rc.1` 等后缀的标签发布为预发布版本。CI 运行 COM、回调派发、安装和打包测试；真实截图仍需在 Windows 10 交互桌面验证。详见 [CI 与 Release 指南](capture-compat/docs/ci.md)。
+Pushing a version tag such as `v1.0.0` creates a GitHub Release after both builds pass, with two ZIPs and their checksum files. Tags with a suffix such as `-rc.1` produce prereleases. CI covers COM, callback dispatch, installation, and packaging tests; real screenshots still require validation on a Windows 10 interactive desktop.
 
-## 适用范围
+To publish, first push the workflow and desired source revision to `main`, then tag that commit and push the tag:
 
-- 仅提供 x64 构建，面向使用 Windows Graphics Capture 的目标 helper。
-- helper 必须允许加载同目录 `version.dll`，并在主 EXE 中直接导入 `RoGetActivationFactory`。
-- 兼容行为由实际接口能力决定，不通过修改系统版本或捕获权限来启用。
-- Windows 11、其他 helper 构建及不同图形环境仍需各自验证；这不是所有截图故障的通用修复。
-- DLL 未签名。异步派发改变了回调线程和错误返回时序，具体约束见[实现说明](capture-compat/docs/implementation.md)。
+```powershell
+# Example version; choose an unused tag for the release.
+git tag -a v1.0.0 -m 'Release v1.0.0'
+git push origin v1.0.0
+```
 
-## 文档
+Manual workflow runs only produce Actions artifacts. Publishing uses the built-in `GITHUB_TOKEN`; no personal access token is required. Existing releases are not overwritten. See the [CI and release guide](capture-compat/docs/ci_en.md) for local packaging and checksum verification.
 
-- [构建与使用指南](capture-compat/README.md)
-- [实现说明](capture-compat/docs/implementation.md)
-- [验证与排错指南](capture-compat/docs/validation.md)
-- [CI 与 Release 指南](capture-compat/docs/ci.md)
+## Scope and compatibility
 
-## 鸣谢
+- Only x64 builds are provided, targeting helpers that use Windows Graphics Capture.
+- The helper must allow loading a local `version.dll` and directly import `RoGetActivationFactory` in its main EXE.
+- Compatibility behavior is selected by actual interface support. It does not change the reported Windows version or capture permissions.
+- Windows 11, other helper builds, and different graphics environments require separate validation. This layer does not address every possible screenshot failure.
+- The DLL is unsigned. Asynchronous dispatch changes the callback thread and the timing of error returns; see the [implementation guide](capture-compat/docs/implementation_en.md) for the constraints.
 
-本项目基于 [MagicalAstrogy/CodexComputerUseFix](https://github.com/MagicalAstrogy/CodexComputerUseFix)，感谢原作者 MagicalAstrogy 提供 Windows 10 截图兼容实现。本次修复基于上游 v0.1.0（f5ad8d0），文档同步至 1a56b55，并补充安装恢复、内存保护恢复和并发订阅清理修复及测试。
+## Documentation
 
-原项目采用 WTFPL v2；本项目沿用该许可。许可全文集中收录如下：
+Detailed guides are available in English and Simplified Chinese:
+
+- [Build and usage](capture-compat/README_en.md)
+- [Implementation](capture-compat/docs/implementation_en.md)
+- [Validation and troubleshooting](capture-compat/docs/validation_en.md)
+- [CI and releases](capture-compat/docs/ci_en.md)
+
+## Acknowledgements
+
+Based on [MagicalAstrogy/CodexComputerUseFix](https://github.com/MagicalAstrogy/CodexComputerUseFix). Thanks to MagicalAstrogy for the original Windows 10 capture compatibility implementation. These fixes build on upstream v0.1.0 (f5ad8d0), with documentation synchronized to 1a56b55, and add installer recovery, page-protection restoration, concurrent subscription cleanup, and regression tests.
+
+The original project uses WTFPL v2; this project uses the same license. The complete license text is included here:
 
 <details>
-<summary>WTFPL v2 许可全文</summary>
+<summary>Full WTFPL v2 license</summary>
 
 ```text
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
